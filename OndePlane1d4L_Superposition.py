@@ -13,6 +13,8 @@ I = 1j
 
 NB_POINTS = 1000
 
+T_INIT = 0
+
 
 # Classes :
 
@@ -76,7 +78,7 @@ def graphique(waves) -> None:
 
     w1, w2, w3, delta_k = waves
 
-    x, t = linspace(-pi / delta_k, pi / delta_k, NB_POINTS), 0.0
+    x, t = linspace(-pi / delta_k, pi / delta_k, NB_POINTS), T_INIT
 
     psi1, psi2, psi3 = planeWave(w1, x, t), planeWave(w2, x, t), planeWave(w3, x, t)
 

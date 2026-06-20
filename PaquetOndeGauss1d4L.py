@@ -8,8 +8,8 @@ import matplotlib.pyplot
 # Constantes :
 
 I = sqrt(-1 + 0j)
-HBAR : float = 1.05457182 * 10 ** (-34)
-M : float = 9.1093837 * 10 ** (-31)
+HBAR = 1.05457182 * 10 ** (-34)
+M = 9.1093837 * 10 ** (-31)
 
 # Fonctions :
 

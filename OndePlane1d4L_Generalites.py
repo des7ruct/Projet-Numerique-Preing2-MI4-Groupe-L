@@ -13,6 +13,8 @@ I = 1j
 
 NB_POINTS = 1000
 
+T_INIT = 0
+
 
 
 # Classes :
@@ -62,7 +64,7 @@ def makeWave() -> Wave :
 
 
 def graphique(w: Wave) -> None:
-    x, t = linspace(0, 5, NB_POINTS), 0.0
+    x, t = linspace(0, 5, NB_POINTS), T_INIT
 
     psi = planeWave(w, x, t)
 
