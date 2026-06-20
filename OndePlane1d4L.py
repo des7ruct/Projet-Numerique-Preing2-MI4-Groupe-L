@@ -20,52 +20,63 @@ class Wave:
     omega: float
 
 
-
 # Fonctions :
 
-def Verification(w: Wave) -> None {
-    if (w.amp <= 0) {
+def verification(w: Wave) -> None :
+    if (w.amp <= 0) :
         sys.exit("amp doit être strictement supérieur à 0")
-    }
     
-    elif (w.k == 0) {
+    elif (w.k == 0) :
         sys.exit("k ne doit pas être égal à 0.")
-    } 
 
-    elif (w.omega <= 0) {
+    elif (w.omega <= 0) :
         sys.exit("omega doit être strictement supérieur à 0.")
-    } 
-}
+
+    return None
 
 
-def PlaneWave(w: Wave x: float, t: float) :
-    if (k <= 0) {
-        exit
-    } 
+def planeWave(w: Wave, x, t) :
+    return w.amp * exp(I * (w.k * x - w.omega * t))
     
 
-    return amp * exp(I * (k * x - omega * t))
-    
+def makeWave() -> Wave :
+
+    w = Wave()
+
+    print("Saisir une amplitude : ")
+    w.amp = float(input())
+
+    print("Saisir un vecteur d'onde : ")
+    w.k = float(input()) * pi
+
+    print("Saisir une pulsation : ")
+    w.omega = float(input()) * pi
+
+    verification(w)
+
+    return w
 
 
+def graphique(w: Wave) -> None:
+    x = linspace(0, 1, 500)
+    t = 0
+
+    psi = planeWave(w, x, t)
+
+    psiReal = real(psi)
+    psiImag = imag(psi)
+
+    fig, ax = plt.subplots()
+
+
+    ax.plot(x, psiReal)
+    ax.plot(x, psiImag)
+
+    plt.show()
 
 
 # Code principal
 
-print("Saisir une amplitude : ")
-amp = float input()
-
-print("Saisir un vecteur d'onde : ")
-k = float input()
-
-print("Saisir une pulsation : ")
-omega = float input()
-
-MyWave = Wave(amp, k, omega)
-
-Verification(MyWave)
+graphique(makeWave())
 
 
-fig, ax = plt.subplots()
-ax.plot(x, y)
-plt.show()
