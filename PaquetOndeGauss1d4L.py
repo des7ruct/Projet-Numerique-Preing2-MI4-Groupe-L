@@ -1,87 +1,63 @@
-# Importations :
-
-from numpy import pi, exp, sqrt, real, imag, linspace, abs
-
+import numpy as np
 import matplotlib.pyplot as plt
 
-import sys
+k0 = 1
+a = 5
+x0 = 0
 
+xmin = -20
+xmax = 100
 
-# Constants :
+N = 3000
 
-I = 1j
+x = np.linspace(xmin, xmax, N)
 
-HBAR = 1.0
-#HBAR = 1.05457182 * 10 ** (-34)
+psi = np.exp(-(x - x0)**2 / a**2) * np.exp(1j * k0 * x)
 
-M = 1.0
-#M = 9.1093837 * 10 ** (-31)
+norme = np.trapz(np.abs(psi)**2, x)
 
-T_INIT = 0
+psi = psi / np.sqrt(norme)
 
-NB_POINTS = 1000
+rho = np.abs(psi)**2
 
+plt.figure(figsize=(8,5))
 
-# Functions :
+plt.plot(
+    x,
+    np.real(psi),
+    color='royalblue',
+    linewidth=2,
+    label='Partie réelle'
+)
 
+plt.plot(
+    x,
+    np.imag(psi),
+    '--',
+    color='orange',
+    linewidth=2,
+    label='Partie imaginaire'
+)
 
-def GaussWP(k0, a, x):
+plt.plot(
+    x,
+    rho,
+    color='green',
+    linewidth=2,
+    label=r'$|\Psi|^2$'
+)
 
-    factor, squareroot = (1 / (8 * pi ** 3)) ** 0.25, sqrt((4 * pi * M * a) / (M * a ** 2 + 2 * I * HBAR * T_INIT))
-    num, den, rest = M * (a ** 2 * k0 + 2 * I * x) ** 2, 4 * (M * a ** 2 + 2 * I * HBAR * T_INIT), (a ** 2 * k0 ** 2) / 4
-    
-    return factor * squareroot * exp(num / den - rest)
+plt.grid(alpha=0.3)
 
+plt.xlim(-20, 40)
 
-def verification(k0, a) -> None :
-    if (a <= 0) :
-        sys.exit("amp doit être strictement supérieur à 0")
-    
-    elif (k0 == 0) :
-        sys.exit("k0 ne doit pas être égal à 0.")
+plt.xlabel("Position x")
+plt.ylabel("Amplitude")
 
-    return None
+plt.title("Paquet d'ondes gaussien normalisé")
 
+plt.legend()
 
-def makePacket():
+plt.tight_layout()
 
-    print("Saisir une amplitude : ")
-    a = float(input())
-
-    print("Saisir un nombre d'onde : ")
-    k0 = float(input()) * pi
-
-    verification(k0, a)
-
-    return (k0, a)
-
-
-def graph(k0, a):
-
-    x = linspace(-5, 5, NB_POINTS)
-
-    psi = GaussWP(k0, a, x)
-
-    fig, ax = plt.subplots(figsize=(10, 10))
-
-    ax.plot(x, real(psi), color = "blue", linewidth = 2)
-    ax.plot(x, imag(psi), color = "red", linestyle = "dashed")
-    ax.plot(x, abs(psi), color = "black", linestyle = "dotted", linewidth = 1.5)
-
-    ax.set_title(f"Paquet d'ondes gaussien à t = {T_INIT}", fontsize = 12)
-    ax.set_xlabel("Position x", fontsize=10)
-    ax.set_ylabel("Amplitude", fontsize=10)
-    
-    ax.grid(True)
-
-    plt.show()
-
-    return None
-
-  
-
-# Main Code
-
-k0, a = makePacket()
-
-graph(k0, a)
+plt.show()
