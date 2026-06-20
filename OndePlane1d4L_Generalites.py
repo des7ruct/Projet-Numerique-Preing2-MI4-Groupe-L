@@ -11,7 +11,7 @@ import sys
 
 I = 1j
 
-NB_POINTS = 1000
+NB_POINTS = 500
 
 T_INIT = 0
 
@@ -64,15 +64,15 @@ def makeWave() -> Wave :
 
 
 def graph(w: Wave) -> None:
-    x = linspace(-5, 5, NB_POINTS)
+    x = linspace(0, 5, NB_POINTS)
 
     psi = planeWave(w, x)
 
     fig, ax = plt.subplots(figsize=(10, 10))
 
 
-    ax.plot(x, real(psi), color = "blue", linewidth = 2)
-    ax.plot(x, imag(psi), color = "red", linestyle = "dashed", linewidth = 2)
+    ax.plot(x, real(psi), color = "blue", linewidth = 2, label="partie réelle (cos)")
+    ax.plot(x, imag(psi), color = "red", linestyle = "dashed", linewidth = 2, label="partie imaginaire (sin)")
 
     ax.set_title(f"Parties réelle et imaginaire de l'onde plane à t = {T_INIT}", fontsize=12)
     ax.set_xlabel("Position x", fontsize=10)

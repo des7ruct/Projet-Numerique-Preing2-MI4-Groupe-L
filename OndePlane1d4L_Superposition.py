@@ -1,6 +1,6 @@
 # Importations :
 
-from numpy import pi, exp, real, imag, linspace, cos, sin
+from numpy import pi, exp, real, linspace, cos, sin
 
 import matplotlib.pyplot as plt
 
@@ -87,14 +87,14 @@ def graph(waves) -> None:
 
     fig, ax = plt.subplots(figsize = (10, 10))
 
-    ax.plot(x, real(psi1), color="purple", linewidth=1, label="Re[onde 0]")
-    ax.plot(x, real(psi2), color="teal", linewidth=1, label="Re[onde 1]")
-    ax.plot(x, real(psi3), color="olive", linewidth=1, label="Re[onde 2]")
+    ax.plot(x, real(psi1), color="purple", linewidth=1.5, label="Re[onde 0]")
+    ax.plot(x, real(psi2), color="orange", linestyle="dashdot", linewidth=1.3, label="Re[onde 1]", alpha=0.5)
+    ax.plot(x, real(psi3), color="orange", linestyle="dashdot", linewidth=1.3, label="Re[onde 2]", alpha=0.5)
 
     ax.plot(x, real(psi_sum), color="crimson", linewidth=2, label="Re[somme]")
 
-    ax.plot(x, sup, color="black", linestyle="--", linewidth=1.5, label="enveloppe")
-    ax.plot(x, -sup, color="black", linestyle="--", linewidth=1.5)
+    ax.plot(x, sup, color="black", linestyle="dashed", linewidth=1.5, label="enveloppe")
+    ax.plot(x, -sup, color="black", linestyle="dashed", linewidth=1.5)
 
     ax.set_title(f"Superposition de 3 ondes planes et son enveloppe à t = {T_INIT}", fontsize=12)
     ax.set_xlabel("Position x", fontsize = 10)
