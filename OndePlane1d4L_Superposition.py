@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 
 
-# Constantes :
+# Constants :
 
 I = 1j
 
@@ -21,18 +21,18 @@ T_INIT = 0
 class Wave:
 
     amp: float 
-    k: float
+    k0: float
     omega: float
 
 
-# Fonctions :
+# Functions :
 
 def verification(w: Wave, delta_k: float) -> None :
     if (w.amp <= 0) :
         sys.exit("amp doit être strictement supérieur à 0")
     
-    elif (w.k == 0) :
-        sys.exit("k ne doit pas être égal à 0.")
+    elif (w.k0 == 0) :
+        sys.exit("k0 ne doit pas être égal à 0.")
 
     elif (delta_k == 0) :
         sys.exit("delta k ne doit pas être égal à 0.")
@@ -43,8 +43,8 @@ def verification(w: Wave, delta_k: float) -> None :
     return None
 
 
-def planeWave(w: Wave, x, t) :
-    return w.amp * exp(I * (w.k * x - w.omega * t))
+def planeWave(w: Wave, x) :
+    return w.amp * exp(I * (w.k0 * x - w.omega * T_INIT))
     
 
 def makeWave() -> Wave :
@@ -55,7 +55,7 @@ def makeWave() -> Wave :
     w1.amp = float(input())
 
     print("Saisir un nombre d'onde : ")
-    w1.k = float(input()) * pi
+    w1.k0 = float(input()) * pi
 
     print("Saisir un second nombre d'onde : ")
     delta_k = float(input()) * pi
@@ -67,20 +67,20 @@ def makeWave() -> Wave :
 
     w2.amp = w3.amp = w1.amp / 2
 
-    w2.k, w3.k = w1.k - (delta_k / 2), w1.k + (delta_k / 2)
+    w2.k0, w3.k0 = w1.k0 - (delta_k / 2), w1.k0 + (delta_k / 2)
     
     w2.omega = w3.omega = w1.omega
 
     return (w1, w2, w3, delta_k)
 
 
-def graphique(waves) -> None:
+def graph(waves) -> None:
 
     w1, w2, w3, delta_k = waves
 
-    x, t = linspace(-pi / delta_k, pi / delta_k, NB_POINTS), T_INIT
+    x = linspace(-pi / delta_k, pi / delta_k, NB_POINTS)
 
-    psi1, psi2, psi3 = planeWave(w1, x, t), planeWave(w2, x, t), planeWave(w3, x, t)
+    psi1, psi2, psi3 = planeWave(w1, x), planeWave(w2, x), planeWave(w3, x)
 
     psi_sum = psi1 + psi2 + psi3
     sup = inf = w1.amp * (1 + cos(delta_k / 2 * x))
@@ -97,14 +97,17 @@ def graphique(waves) -> None:
     ax.plot(x, sup, color = "red", linewidth = 1.5, linestyle = "dashdot")
     ax.plot(x, inf, color = "red", linewidth = 1.5, linestyle = "dashdot")
 
+    ax.set_title(f"Superposition de 3 ondes planes et son enveloppe à t = {T_INIT}", fontsize=12)
     ax.set_xlabel("Position x", fontsize = 10)
-    ax.set_ylabel("Partie Réelle / Amplitude", fontsize = 10)
+    ax.set_ylabel("Amplitude", fontsize = 10)
 
     ax.grid(True)
 
     plt.show()
 
+    return None
 
-# Code principal
 
-graphique(makeWave())
+# Main Code
+
+graph(makeWave())
