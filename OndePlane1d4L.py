@@ -69,8 +69,13 @@ def graphique(w: Wave) -> None:
     fig, ax = plt.subplots()
 
 
-    ax.plot(x, psiReal)
-    ax.plot(x, psiImag)
+    ax.plot(x, psiReal, color="blue", linewidth=2)
+    ax.plot(x, psiImag, color="red", linestyle="--", linewidth=2)
+
+    ax.set_xlabel("Position x (m)", fontsize=10)
+    ax.set_ylabel("Amplitude", fontsize=10)
+
+    ax.grid(True)
 
     plt.show()
 
