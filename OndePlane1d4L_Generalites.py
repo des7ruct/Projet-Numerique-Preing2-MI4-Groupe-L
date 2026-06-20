@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 
 
-# Constantes :
+# Constants :
 
 I = 1j
 
@@ -26,7 +26,7 @@ class Wave:
     omega: float
 
 
-# Fonctions :
+# Functions :
 
 def verification(w: Wave) -> None :
     if (w.amp <= 0) :
@@ -41,8 +41,8 @@ def verification(w: Wave) -> None :
     return None
 
 
-def planeWave(w: Wave, x, t) :
-    return w.amp * exp(I * (w.k * x - w.omega * t))
+def planeWave(w: Wave, x) :
+    return w.amp * exp(I * (w.k * x - w.omega * T_INIT))
     
 
 def makeWave() -> Wave :
@@ -63,27 +63,28 @@ def makeWave() -> Wave :
     return w
 
 
-def graphique(w: Wave) -> None:
-    x, t = linspace(0, 5, NB_POINTS), T_INIT
+def graph(w: Wave) -> None:
+    x = linspace(-5, 5, NB_POINTS)
 
-    psi = planeWave(w, x, t)
-
-    psiReal, psiImag = real(psi), imag(psi)
+    psi = planeWave(w, x)
 
     fig, ax = plt.subplots(figsize=(10, 10))
 
 
-    ax.plot(x, psiReal, color = "blue", linewidth = 2)
-    ax.plot(x, psiImag, color = "red", linestyle = "dashed", linewidth = 2)
+    ax.plot(x, real(psi), color = "blue", linewidth = 2)
+    ax.plot(x, imag(psi), color = "red", linestyle = "dashed", linewidth = 2)
 
-    ax.set_xlabel("Position x (m)", fontsize=10)
+    ax.set_title(f"Parties réelle et imaginaire de l'onde plane à t = {T_INIT}", fontsize=12)
+    ax.set_xlabel("Position x", fontsize=10)
     ax.set_ylabel("Amplitude", fontsize=10)
 
     ax.grid(True)
 
     plt.show()
 
+    return None
 
-# Code principal
 
-graphique(makeWave())
+# Main Code
+
+graph(makeWave())
