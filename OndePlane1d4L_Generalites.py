@@ -1,13 +1,17 @@
 # Importations :
 
-from numpy import pi, exp, sqrt, real, imag, zeros, linspace
+from numpy import pi, exp, real, imag, linspace
 
 import matplotlib.pyplot as plt
+
+import sys
 
 
 # Constantes :
 
 I = 1j
+
+NB_POINTS = 1000
 
 
 
@@ -29,8 +33,8 @@ def verification(w: Wave) -> None :
     elif (w.k == 0) :
         sys.exit("k ne doit pas être égal à 0.")
 
-    elif (w.omega <= 0) :
-        sys.exit("omega doit être strictement supérieur à 0.")
+    elif (w.omega < 0) :
+        sys.exit("omega doit être supérieur ou égal à 0.")
 
     return None
 
@@ -46,7 +50,7 @@ def makeWave() -> Wave :
     print("Saisir une amplitude : ")
     w.amp = float(input())
 
-    print("Saisir un vecteur d'onde : ")
+    print("Saisir un nombre d'onde : ")
     w.k = float(input()) * pi
 
     print("Saisir une pulsation : ")
@@ -58,19 +62,17 @@ def makeWave() -> Wave :
 
 
 def graphique(w: Wave) -> None:
-    x = linspace(0, 1, 500)
-    t = 0
+    x, t = linspace(0, 5, NB_POINTS), 0.0
 
     psi = planeWave(w, x, t)
 
-    psiReal = real(psi)
-    psiImag = imag(psi)
+    psiReal, psiImag = real(psi), imag(psi)
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(10, 10))
 
 
-    ax.plot(x, psiReal, color="blue", linewidth=2)
-    ax.plot(x, psiImag, color="red", linestyle="--", linewidth=2)
+    ax.plot(x, psiReal, color = "blue", linewidth = 2)
+    ax.plot(x, psiImag, color = "red", linestyle = "dashed", linewidth = 2)
 
     ax.set_xlabel("Position x (m)", fontsize=10)
     ax.set_ylabel("Amplitude", fontsize=10)
@@ -83,5 +85,3 @@ def graphique(w: Wave) -> None:
 # Code principal
 
 graphique(makeWave())
-
-
