@@ -84,22 +84,25 @@ def graph(waves) -> None:
 
     psi_sum = psi1 + psi2 + psi3
     sup = inf = w1.amp * (1 + cos(delta_k / 2 * x))
-    inf *= -1
 
     fig, ax = plt.subplots(figsize = (10, 10))
 
-    ax.plot(x, real(psi1), color = "blue")
-    ax.plot(x, real(psi2), color = "orange", linestyle = "dashdot")
-    ax.plot(x, real(psi3), color = "orange", linestyle = "dashdot")
+    ax.plot(x, real(psi1), color="purple", linewidth=1, label="Re[onde 0]")
+    ax.plot(x, real(psi2), color="teal", linewidth=1, label="Re[onde 1]")
+    ax.plot(x, real(psi3), color="olive", linewidth=1, label="Re[onde 2]")
 
-    ax.plot(x, real(psi_sum), color = "black", linewidth = 2, linestyle = "dashed", alpha = 0.5)
+    ax.plot(x, real(psi_sum), color="crimson", linewidth=2, label="Re[somme]")
 
-    ax.plot(x, sup, color = "red", linewidth = 1.5, linestyle = "dashdot")
-    ax.plot(x, inf, color = "red", linewidth = 1.5, linestyle = "dashdot")
+    ax.plot(x, sup, color="black", linestyle="--", linewidth=1.5, label="enveloppe")
+    ax.plot(x, -sup, color="black", linestyle="--", linewidth=1.5)
 
     ax.set_title(f"Superposition de 3 ondes planes et son enveloppe à t = {T_INIT}", fontsize=12)
     ax.set_xlabel("Position x", fontsize = 10)
     ax.set_ylabel("Amplitude", fontsize = 10)
+
+    ax.legend(fontsize=8)
+
+    plt.tight_layout()
 
     ax.grid(True)
 
