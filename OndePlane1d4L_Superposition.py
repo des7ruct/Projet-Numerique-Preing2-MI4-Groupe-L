@@ -1,43 +1,61 @@
-from numpy import pi, exp, real, linspace, cos
+# Importations :
+
+from numpy import pi, exp, real, imag, linspace, cos, sin
+
 import matplotlib.pyplot as plt
+
 import sys
 
+
+# Constants :
+
 I = 1j
+
 NB_POINTS = 1000
+
 T_INIT = 0
 
 
+# Classes :
+
 class Wave:
-    amp: float
-    k: float
+
+    amp: float 
+    k0: float
     omega: float
 
 
-def verification(w: Wave, delta_k: float) -> None:
-    if w.amp <= 0:
-        sys.exit("amp doit être strictement supérieur à 0.")
-    if w.k == 0:
-        sys.exit("k ne doit pas être égal à 0.")
-    if delta_k == 0:
-        sys.exit("delta_k ne doit pas être égal à 0.")
-    if w.omega < 0:
+# Functions :
+
+def verification(w: Wave, delta_k: float) -> None :
+    if (w.amp <= 0) :
+        sys.exit("amp doit être strictement supérieur à 0")
+    
+    elif (w.k0 == 0) :
+        sys.exit("k0 ne doit pas être égal à 0.")
+
+    elif (delta_k == 0) :
+        sys.exit("delta k ne doit pas être égal à 0.")
+
+    elif (w.omega < 0) :
         sys.exit("omega doit être supérieur ou égal à 0.")
 
-
-def planeWave(w: Wave, x, t):
-    return w.amp * exp(I * (w.k * x - w.omega * t))
+    return None
 
 
-def makeWave():
-    w1 = Wave()
-    w2 = Wave()
-    w3 = Wave()
+def planeWave(w: Wave, x) :
+    return w.amp * exp(I * (w.k0 * x - w.omega * T_INIT))
+    
+
+def makeWave() -> Wave :
+
+    w1 = w2 = w3 = Wave()
 
     print("Saisir une amplitude : ")
     w1.amp = float(input())
 
     print("Saisir un nombre d'onde : ")
-    w1.k = float(input()) * pi
+    w1.k0 = float(input()) * pi
 
     print("Saisir un second nombre d'onde : ")
     delta_k = float(input()) * pi
@@ -47,52 +65,49 @@ def makeWave():
 
     verification(w1, delta_k)
 
-    w2.amp = w1.amp / 2
-    w3.amp = w1.amp / 2
+    w2.amp = w3.amp = w1.amp / 2
 
-    w2.k = w1.k - delta_k / 2
-    w3.k = w1.k + delta_k / 2
+    w2.k0, w3.k0 = w1.k0 - (delta_k / 2), w1.k0 + (delta_k / 2)
+    
+    w2.omega = w3.omega = w1.omega
 
-    w2.omega = w1.omega
-    w3.omega = w1.omega
-
-    return w1, w2, w3, delta_k
+    return (w1, w2, w3, delta_k)
 
 
-def graphique(waves) -> None:
+def graph(waves) -> None:
+
     w1, w2, w3, delta_k = waves
 
     x = linspace(-pi / delta_k, pi / delta_k, NB_POINTS)
-    t = T_INIT
 
-    psi1 = planeWave(w1, x, t)
-    psi2 = planeWave(w2, x, t)
-    psi3 = planeWave(w3, x, t)
+    psi1, psi2, psi3 = planeWave(w1, x), planeWave(w2, x), planeWave(w3, x)
 
     psi_sum = psi1 + psi2 + psi3
+    sup = inf = w1.amp * (1 + cos(delta_k / 2 * x))
+    inf *= -1
 
-    envelope = w1.amp * (1 + cos(delta_k / 2 * x))
+    fig, ax = plt.subplots(figsize = (10, 10))
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(x, real(psi1), color = "blue")
+    ax.plot(x, real(psi2), color = "orange", linestyle = "dashdot")
+    ax.plot(x, real(psi3), color = "orange", linestyle = "dashdot")
 
-    ax.plot(x, real(psi1), color="purple", linewidth=1, label="Re[onde 0]")
-    ax.plot(x, real(psi2), color="teal", linewidth=1, label="Re[onde 1]")
-    ax.plot(x, real(psi3), color="olive", linewidth=1, label="Re[onde 2]")
+    ax.plot(x, real(psi_sum), color = "black", linewidth = 2, linestyle = "dashed", alpha = 0.5)
 
-    ax.plot(x, real(psi_sum), color="crimson", linewidth=2, label="Re[somme]")
+    ax.plot(x, sup, color = "red", linewidth = 1.5, linestyle = "dashdot")
+    ax.plot(x, inf, color = "red", linewidth = 1.5, linestyle = "dashdot")
 
-    ax.plot(x, envelope, color="black", linestyle="--", linewidth=1.5, label="enveloppe")
-    ax.plot(x, -envelope, color="black", linestyle="--", linewidth=1.5)
-
-    ax.set_title("Superposition d'ondes planes")
-    ax.set_xlabel("x [m]")
-    ax.set_ylabel("amplitude")
+    ax.set_title(f"Superposition de 3 ondes planes et son enveloppe à t = {T_INIT}", fontsize=12)
+    ax.set_xlabel("Position x", fontsize = 10)
+    ax.set_ylabel("Amplitude", fontsize = 10)
 
     ax.grid(True)
-    ax.legend(fontsize=8)
 
-    plt.tight_layout()
     plt.show()
 
+    return None
 
-graphique(makeWave())
+
+# Main Code
+
+graph(makeWave())
