@@ -69,7 +69,7 @@ ax.set_xlim(-30, 30)
 ax.set_ylim(-0.05, 0.6)
 ax.set_xlabel("Position x", fontsize = 10)
 ax.set_ylabel("Densité de probabilité |Psi|^2", fontsize = 10)
-ax.set_title("Evolution temporelle et étalement du paquet d'ondes libre", fontsize=12)
+ax.set_title("Evolution temporelle du paquet d'onde vers une barrière de potentiel", fontsize=12)
 ax.grid(True, linestyle=":", alpha=0.5)
 
 line_density, = ax.plot([], [], color = "black", linewidth = 2, label = r"|psi|^2")
