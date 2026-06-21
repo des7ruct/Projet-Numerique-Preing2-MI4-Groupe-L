@@ -7,9 +7,11 @@ from matplotlib.animation import FuncAnimation
 
 # Constants
 
-HBAR, M, NX, NT, I, DT = 1.0, 1.0, 600, 4000, 1j, 0.0002
+HBAR, M, NX, NT, I, DT = 1.0, 1.0, 600, 6000, 1j, 0.0002
 
 K0, A = 4.0, 2.0
+
+V_HEIGHT, X_START, X_END = 12.0, 4.0, 6.0
 
 
 # Functions
@@ -43,16 +45,31 @@ factor, squareroot = (1.0 / (8.0 * pi ** 3)) ** 0.25, sqrt((4.0 * pi * M * A) / 
 psi_initial = factor * squareroot * exp(I * K0 * x - (x ** 2) / (A ** 2))
 
 
-psi = zeros((NX, NT), dtype=complex)
+psi = zeros((NX, NT), dtype = complex)
 psi[:, 0] = psi_initial
 
 
+V = zeros(NX)
+
+V[(x >= X_START) & (x <= X_END)] = V_HEIGHT
+
+
+for j in range(0, NT - 1):
+    d2psi = zeros(NX, dtype = complex)
+    d2psi[1:-1], d2psi[0], d2psi[-1] = (psi[2:, j] - 2 * psi[1:-1, j] + psi[:-2, j]) / (dx ** 2), d2psi[1], d2psi[-2]
+    
+    kinetic, potential = (I * HBAR / (2 * M)) * d2psi, (-I / HBAR) * V * psi[:, j]
+    
+    psi[:, j+1] = psi[:, j] + DT * (kinetic + potential)
+
+
+'''
 for j in range(0, NT - 1):
     d2psi = zeros(NX, dtype=complex)
     d2psi[1:-1], d2psi[0], d2psi[-1] = (psi[2:, j] - 2 * psi[1:-1, j] + psi[:-2, j]) / (dx**2), d2psi[1], d2psi[-2]
     
     psi[:, j+1] = psi[:, j] + DT * (I * HBAR / (2 * M)) * d2psi
-
+'''
 
 fig, ax = plt.subplots(figsize=(10, 10))
 ax.set_xlim(-30, 30)
