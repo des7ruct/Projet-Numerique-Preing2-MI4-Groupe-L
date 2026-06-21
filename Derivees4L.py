@@ -1,6 +1,5 @@
 # Importations
 
-import numpy as np
 from numpy import zeros, linspace, abs, max
 
 
@@ -47,4 +46,4 @@ x = x != 0
 error, errorbis = abs((y_numerical[x] - y_theorical[x]) / y_theorical[x]), abs(y_d2_numerical[1:-1] - 2.0)
 
 print(f"Erreur relative maximale (dérivée 1ère) : {max(error):.2e}")
-print(f"Erreur absolue maximale (dérivée seconde) : {np.max(errorbis):.2e}")
+print(f"Erreur absolue maximale (dérivée seconde) : {max(errorbis):.2e}")
