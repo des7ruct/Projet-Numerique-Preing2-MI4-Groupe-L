@@ -119,7 +119,14 @@ def Compute_tau_free(k0=K0, a=A_BARR):
     return a / Compute_group_velocity(k0)
 
 
-def Compute_tau_crossing_numeric(psi, x_array, t_array, x_barr=X_BARR, a=A_BARR):
+def Compute_tau_crossing_numeric(
+    psi,
+    x_array,
+    t_array,
+    x_barr=X_BARR,
+    a=A_BARR,
+    seuil_transmission=0.01
+):
     x_in = x_barr
     x_out = x_barr + a
 
@@ -141,7 +148,7 @@ def Compute_tau_crossing_numeric(psi, x_array, t_array, x_barr=X_BARR, a=A_BARR)
             x=x_array[mask]
         )
 
-        if prob_trans > 1e-3:
+        if prob_trans > seuil_transmission:
             pos_trans = scipy.integrate.simpson(
                 x_array[mask] * density[mask],
                 x=x_array[mask]
@@ -274,7 +281,8 @@ if __name__ == "__main__":
     tau_cross = Compute_tau_crossing_numeric(
         psi,
         x,
-        t_grid
+        t_grid,
+        seuil_transmission=0.01
     )
 
     prob_trans = Compute_transmitted_probability(
@@ -296,7 +304,7 @@ if __name__ == "__main__":
     print(" a        tau0        taut")
     print("--------------------------------")
 
-    a_values = [1, 2, 3, 4, 5, 6]
+    a_values = [1, 2, 3, 4]
 
     for a in a_values:
         potential_a = Compute_potential(x, a=a)
@@ -313,9 +321,43 @@ if __name__ == "__main__":
             psi_a,
             x,
             t_grid,
-            a=a
+            a=a,
+            seuil_transmission=1e-4
         )
 
         print(f"{a:2d}      {tau0_a:8.4f}    {taut_a:8.4f}")
+
+    print("")
+    print("=== Influence de la hauteur V0 ===")
+    print("--------------------------------------")
+    print(" V0        taut        P_trans")
+    print("--------------------------------------")
+
+    v0_values = [3, 4, 5, 6, 7, 8]
+
+    for v0 in v0_values:
+        potential_v0 = Compute_potential(x, v0=v0, a=A_BARR)
+        psi_ini_v0 = Compute_ini_gaussian_wp(x)
+
+        psi_v0 = Solve_schrodinger(
+            psi_ini_v0,
+            potential_v0
+        )
+
+        taut_v0 = Compute_tau_crossing_numeric(
+            psi_v0,
+            x,
+            t_grid,
+            a=A_BARR,
+            seuil_transmission=0.01
+        )
+
+        p_trans_v0 = Compute_transmitted_probability(
+            np.abs(psi_v0[-1])**2,
+            x,
+            X_BARR + A_BARR
+        )
+
+        print(f"{v0:2d}      {taut_v0:8.4f}    {p_trans_v0:8.4f}")
 
     plot_tunnel_snapshots(psi, potential, x, t_grid)
