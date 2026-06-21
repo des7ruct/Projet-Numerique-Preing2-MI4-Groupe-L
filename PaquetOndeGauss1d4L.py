@@ -57,6 +57,7 @@ def graph(k0, a):
     psi = GaussWP(k0, a, x)
 
     fig, ax = plt.subplots(figsize=(10, 10))
+    ax.set_xlim(-5, 5)
 
     ax.plot(x, real(psi), color = "blue", linewidth = 2)
     ax.plot(x, imag(psi), color = "red", linestyle = "dashed")

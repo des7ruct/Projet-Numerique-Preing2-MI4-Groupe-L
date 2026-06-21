@@ -18,27 +18,30 @@ def GaussWP_initial(x):
     return factor * squareroot * exp(I * K0 * x - (x ** 2) / (A ** 2))
 
 
+def density_calculator():
+    x, t = linspace(-20, 20, NX), linspace(0, NT * DT, NT)
+    dx, psi = x[1] - x[0], zeros((NX, NT), dtype=complex)
+
+    psi[:, 0] = GaussWP_initial(x)
+
+
+    for j in range(0, NT - 1):
+
+        d2psi = zeros(NX, dtype=complex)
+
+        d2psi[1:-1], d2psi[0], d2psi[-1] = (psi[2:, j] - 2 * psi[1:-1, j] + psi[:-2, j]) / (dx ** 2), d2psi[1], d2psi[-2]
+    
+        kinetic, potential = (I * HBAR / (2 * M)) * d2psi, (-I * V0 / HBAR) * psi[:, j]
+    
+        psi[:, j+1] = psi[:, j] + DT * (kinetic + potential)
+
+
+    return (trapezoid(abs(psi[:, 0]) ** 2, x), trapezoid(abs(psi[:, -1]) ** 2, x))
+
 
 # Main Code
 
-x, t = linspace(-20, 20, NX), linspace(0, NT * DT, NT)
-dx, psi = x[1] - x[0], zeros((NX, NT), dtype=complex)
-
-psi[:, 0] = GaussWP_initial(x)
-
-
-for j in range(0, NT - 1):
-
-    d2psi = zeros(NX, dtype=complex)
-
-    d2psi[1:-1], d2psi[0], d2psi[-1] = (psi[2:, j] - 2 * psi[1:-1, j] + psi[:-2, j]) / (dx ** 2), d2psi[1], d2psi[-2]
-    
-    kinetic, potential = (I * HBAR / (2 * M)) * d2psi, (-I * V0 / HBAR) * psi[:, j]
-    
-    psi[:, j+1] = psi[:, j] + DT * (kinetic + potential)
-
-
-initial_density, final_density = trapezoid(abs(psi[:, 0]) ** 2, x), trapezoid(abs(psi[:, -1]) ** 2, x)
+initial_density, final_density = density_calculator()
 
 print(f"Conservation de la norme (Idéal = 1.0) :")
 print(f"t = 0 : {initial_density:.4f}")

@@ -64,6 +64,7 @@ def graph(w: Wave) -> None:
     psi = planeWave(w, x)
 
     fig, ax = plt.subplots(figsize=(10, 10))
+    ax.set_xlim(0, 5)
 
 
     ax.plot(x, real(psi), color = "blue", linewidth = 2, label="partie réelle (cos)")
