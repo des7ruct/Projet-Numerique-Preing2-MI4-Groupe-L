@@ -9,17 +9,11 @@ import sys
 
 # Constants :
 
-I = 1j
+I, HBAR, M, T_INIT, NB_POINTS = 1j, 1.0, 1.0, 0, 1000
 
-HBAR = 1.0
 #HBAR = 1.05457182 * 10 ** (-34)
 
-M = 1.0
 #M = 9.1093837 * 10 ** (-31)
-
-T_INIT = 0
-
-NB_POINTS = 1000
 
 
 # Functions :

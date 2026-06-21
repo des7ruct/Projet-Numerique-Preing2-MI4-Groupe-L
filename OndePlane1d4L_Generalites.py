@@ -9,12 +9,7 @@ import sys
 
 # Constants :
 
-I = 1j
-
-NB_POINTS = 500
-
-T_INIT = 0
-
+I, NB_POINTS, T_INIT = 1j, 500, 0
 
 
 # Classes :

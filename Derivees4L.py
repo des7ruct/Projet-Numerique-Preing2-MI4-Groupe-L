@@ -5,9 +5,7 @@ from numpy import zeros, linspace, abs, max
 
 # Constants
 
-NB_POINTS = 1000
-
-DX = 0.01
+NB_POINTS, DX = 1000, 0.01
 
 
 # Functions
@@ -27,7 +25,7 @@ def secondDerivative(y):
     npts = len(y)
     d2y = zeros(npts)
     
-    d2y[1:-1], d2y[0] = (y[2:] - 2 * y[1:-1] + y[:-2]) / (DX**2), d2y[1]
+    d2y[1:-1], d2y[0], d2y[-1] = (y[2:] - 2 * y[1:-1] + y[:-2]) / (DX**2), d2y[1], d2y[-2]
     
     return d2y
 
