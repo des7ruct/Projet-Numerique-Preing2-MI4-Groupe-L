@@ -1,10 +1,9 @@
 # Importations :
 
 from numpy import pi, exp, sqrt, real, imag, linspace, abs
-
 import matplotlib.pyplot as plt
-
 import sys
+
 
 
 # Constants :
@@ -12,12 +11,11 @@ import sys
 I, HBAR, M, T_INIT, NB_POINTS = 1j, 1.0, 1.0, 0, 1000
 
 #HBAR = 1.05457182 * 10 ** (-34)
-
 #M = 9.1093837 * 10 ** (-31)
 
 
-# Functions :
 
+# Functions :
 
 def GaussWP(k0, a, x):
 
@@ -28,6 +26,7 @@ def GaussWP(k0, a, x):
 
 
 def verification(k0, a) -> None :
+
     if (a <= 0) :
         sys.exit("amp doit être strictement supérieur à 0")
     
@@ -53,9 +52,8 @@ def makePacket():
 def graph(k0, a):
 
     x = linspace(-5, 5, NB_POINTS)
-
     psi = GaussWP(k0, a, x)
-
+    
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.set_xlim(-5, 5)
 
@@ -78,5 +76,4 @@ def graph(k0, a):
 # Main Code
 
 k0, a = makePacket()
-
 graph(k0, a)

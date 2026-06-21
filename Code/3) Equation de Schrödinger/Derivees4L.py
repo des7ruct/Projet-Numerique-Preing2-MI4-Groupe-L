@@ -3,9 +3,11 @@
 from numpy import zeros, linspace, abs, max
 
 
+
 # Constants
 
 NB_POINTS, DX = 1000, 0.01
+
 
 
 # Functions
@@ -30,17 +32,15 @@ def secondDerivative(y):
     return d2y
 
 
+
 # Main Code
 
 f, f_derivative = lambda x: x**2, lambda x: 2 * x
-
 x = linspace(-5, 5, NB_POINTS)
 y = f(x)
-
 y_numerical, y_theorical, y_d2_numerical = firstDerivative(y), f_derivative(x), secondDerivative(y)
 
 x = x != 0
-
 error, errorbis = abs((y_numerical[x] - y_theorical[x]) / y_theorical[x]), abs(y_d2_numerical[1:-1] - 2.0)
 
 print(f"Erreur relative maximale (dérivée 1ère) : {max(error):.2e}")
