@@ -33,13 +33,13 @@ for j in range(0, NT - 1):
 
     d2psi[1:-1], d2psi[0], d2psi[-1] = (psi[2:, j] - 2 * psi[1:-1, j] + psi[:-2, j]) / (dx ** 2), d2psi[1], d2psi[-2]
     
-    terme_cinetique, terme_potentiel = (I * HBAR / (2 * M)) * d2psi, (-I * V0 / HBAR) * psi[:, j]
+    kinetic, potential = (I * HBAR / (2 * M)) * d2psi, (-I * V0 / HBAR) * psi[:, j]
     
-    psi[:, j+1] = psi[:, j] + DT * (terme_cinetique + terme_potentiel)
+    psi[:, j+1] = psi[:, j] + DT * (kinetic + potential)
 
 
-densite_initiale, densite_finale = trapezoid(abs(psi[:, 0]) ** 2, x), trapezoid(abs(psi[:, -1]) ** 2, x)
+initial_density, final_density = trapezoid(abs(psi[:, 0]) ** 2, x), trapezoid(abs(psi[:, -1]) ** 2, x)
 
 print(f"Conservation de la norme (Idéal = 1.0) :")
-print(f"t = 0 : {densite_initiale:.4f}")
-print(f"t_fin : {densite_finale:.4f}")
+print(f"t = 0 : {initial_density:.4f}")
+print(f"t_end : {final_density:.4f}")
