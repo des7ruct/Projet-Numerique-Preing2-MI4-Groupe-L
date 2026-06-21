@@ -35,20 +35,16 @@ def secondDerivative(y):
 
 # Main Code
 
-f = lambda x: x**2
-f_derivative = lambda x: 2 * x
+f, f_derivative = lambda x: x**2, lambda x: 2 * x
 
 x = linspace(-5, 5, NB_POINTS)
 y = f(x)
 
-y_numerical = firstDerivative(y)
-y_theorical = f_derivative(x)
-
-y_d2_numerical = secondDerivative(y)
+y_numerical, y_theorical, y_d2_numerical = firstDerivative(y), f_derivative(x), secondDerivative(y)
 
 x = x != 0
-error = abs((y_numerical[x] - y_theorical[x]) / y_theorical[x])
-print(f"Erreur relative maximale (dérivée 1ère) : {max(error):.2e}")
 
-errorbis = abs(y_d2_numerical[1:-1] - 2.0)
+error, errorbis = abs((y_numerical[x] - y_theorical[x]) / y_theorical[x]), abs(y_d2_numerical[1:-1] - 2.0)
+
+print(f"Erreur relative maximale (dérivée 1ère) : {max(error):.2e}")
 print(f"Erreur absolue maximale (dérivée seconde) : {np.max(errorbis):.2e}")
